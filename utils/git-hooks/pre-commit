@@ -1,0 +1,24 @@
+#!/bin/sh -e
+
+rootdir=`git rev-parse --show-toplevel`
+
+initialize() {
+    cd $rootdir
+}
+
+build_doc() {
+    test ! -d .venv && python -m venv .venv
+    .venv/bin/pip install -r docs/requirements.txt
+    (
+        . .venv/bin/activate
+        cd docs
+        make html
+        deactivate
+    )
+}
+
+
+initialize
+build_doc
+
+exit 0
